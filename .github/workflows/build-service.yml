@@ -1,0 +1,11 @@
+# .github/workflows/build-service.yml
+- name: Set up JDK
+  uses: actions/setup-java@v4
+  with:
+    java-version: '21'
+    distribution: 'temurin'
+
+- name: Build with Maven
+  run: mvn --batch-mode package
+  env:
+    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
