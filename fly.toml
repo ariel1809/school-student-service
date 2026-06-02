@@ -1,0 +1,27 @@
+# fly.toml
+app = "school-student-service"
+primary_region = "fra"
+
+[build]
+dockerfile = "Dockerfile"
+# Passez les secrets comme arguments de build
+[build.args]
+GITHUB_ACTOR = "${GITHUB_ACTOR}"
+GITHUB_TOKEN = "${GITHUB_TOKEN}"
+
+[env]
+PORT = "8080"
+SPRING_PROFILES_ACTIVE = "production"
+
+[http_service]
+internal_port = 8080
+force_https = true
+auto_stop_machines = true
+auto_start_machines = true
+min_machines_running = 0
+processes = ["app"]
+
+[[vm]]
+memory = "1gb"
+cpu_kind = "shared"
+cpus = 1
