@@ -1,0 +1,46 @@
+# Student read-side schema. Reuses the shared dynamic-query types (FilterGroup, SortInput,
+# PageInput, FieldMeta, enums) defined in common-lib's graphql/common-query.graphqls.
+# Mutations/commands stay on the existing REST controller.
+
+type Query {
+  "Dynamic, filterable, sortable, paginated student list."
+  students(filter: FilterGroup, sort: [SortInput!], page: PageInput): StudentPage!
+  "Field catalog driving the client's column selector and filter builder."
+  studentFields: [FieldMeta!]!
+}
+
+type StudentPage {
+  content: [Student!]!
+  page: Int!
+  size: Int!
+  totalElements: Int!
+  totalPages: Int!
+  first: Boolean!
+  last: Boolean!
+}
+
+type Student {
+  id: ID!
+  matricule: String
+  photoUrl: String
+  firstName: String
+  lastName: String
+  gender: String
+  dateOfBirth: String
+  placeOfBirth: String
+  nationality: String
+  address: String
+  countryCode: String
+  countryName: String
+  regionId: ID
+  regionName: String
+  cityId: ID
+  city: String
+  phone: String
+  email: String
+  currentClassroomId: ID
+  status: String
+  notes: String
+  createdAt: String
+  updatedAt: String
+}
