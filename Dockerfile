@@ -4,7 +4,7 @@ FROM maven:3.9.6-eclipse-temurin-17 AS build
 WORKDIR /app
 
 # Copiez les fichiers
-COPY mvn-settings.template.xml /tmp/settings.template.xml
+COPY mvn-settings.xml /tmp/settings.template.xml
 COPY pom.xml .
 COPY src ./src
 
