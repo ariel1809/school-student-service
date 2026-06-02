@@ -3,7 +3,8 @@ FROM maven:3.9.6-eclipse-temurin-17 AS build
 
 WORKDIR /app
 
-COPY mvn-settings.xml /root/.m2/settings.xml
+# Copiez les fichiers
+COPY mvn-settings.template.xml /tmp/settings.template.xml
 COPY pom.xml .
 COPY src ./src
 
@@ -11,13 +12,15 @@ COPY src ./src
 ARG GITHUB_ACTOR
 ARG GITHUB_TOKEN
 
-# Build Maven avec credentials passés via -D (plus fiable que ${env.*})
-RUN mvn -s /root/.m2/settings.xml \
-  -Dgithub.username=${GITHUB_ACTOR} \
-  -Dgithub.token=${GITHUB_TOKEN} \
-  --batch-mode package -DskipTests
+# Générer settings.xml en remplaçant les placeholders par les vraies valeurs
+# Puis exécuter Maven avec le fichier généré
+RUN sed -e "s|__GITHUB_USERNAME__|${GITHUB_ACTOR}|g" \
+        -e "s|__GITHUB_TOKEN__|${GITHUB_TOKEN}|g" \
+        /tmp/settings.template.xml > /root/.m2/settings.xml && \
+    rm /tmp/settings.template.xml && \
+    mvn -s /root/.m2/settings.xml --batch-mode package -DskipTests
 
-# Stage runtime
+# Stage runtime minimal
 FROM eclipse-temurin:21-jre-jammy
 
 WORKDIR /app

@@ -28,8 +28,9 @@
     <servers>
         <server>
             <id>github</id>
-            <username>${github.username}</username>
-            <password>${github.token}</password>
+            <!-- Placeholders à remplacer par sed -->
+            <username>__GITHUB_USERNAME__</username>
+            <password>__GITHUB_TOKEN__</password>
         </server>
     </servers>
 </settings>
